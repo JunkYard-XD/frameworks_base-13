@@ -136,7 +136,7 @@ public class BatteryMeterViewController extends ViewController<BatteryMeterView>
         mView.setBatteryEstimateFetcher(mBatteryController::getEstimatedTimeRemainingString);
         mView.setDisplayShieldEnabled(featureFlags.isEnabled(Flags.BATTERY_SHIELD_ICON));
 
-        mSettingObserver = new SettingObserver(mMainHandler);
+        mSettingObserver = new SettingObserver(null);
     }
 
     @Override
