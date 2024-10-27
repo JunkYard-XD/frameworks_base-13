@@ -101,7 +101,7 @@ public abstract class LogoImage extends ImageView {
 
         mAttached = true;
 
-        SettingsObserver observer = new SettingsObserver(new Handler());
+        SettingsObserver observer = new SettingsObserver(null);
         observer.observe();
         updateSettings();
 
