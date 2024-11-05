@@ -237,6 +237,7 @@ public class PixelPropsUtils {
         setPropValue("MODEL", "Pixel 8a");
         setPropValue("PRODUCT", "akita_beta");
         setVersionFieldString("SECURITY_PATCH", "2024-10-05");
+        setVersionFieldString("DEVICE_INITIAL_SDK_INT", "21");
     }
 
     private static boolean isCallerSafetyNet() {
