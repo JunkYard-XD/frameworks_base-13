@@ -42,6 +42,8 @@ public final class PixelPropsUtils {
     private static final String DEVICE = "ro.product.device";
     private static final boolean DEBUG = false;
 
+    private static final String SPOOF_PIXEL_PI = "persist.sys.pixelprops.pi";
+
     private static final Map<String, Object> propsToChangeGeneric;
     private static final Map<String, Object> propsToChangePixel5a;
     private static final Map<String, Object> propsToChangePixel9ProXL;
@@ -296,6 +298,8 @@ public final class PixelPropsUtils {
     }
 
     public static void onEngineGetCertificateChain() {
+        if (!SystemProperties.getBoolean(SPOOF_PIXEL_PI, false))
+            return;
         // Check stack for SafetyNet or Play Integrity
         if ((isCallerSafetyNet() || sIsFinsky) && !sIsExcluded) {
             Log.i(TAG, "Blocked key attestation");
