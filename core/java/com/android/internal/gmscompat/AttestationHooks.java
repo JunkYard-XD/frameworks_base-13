@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.HashMap;
 
 /** @hide */
 public final class AttestationHooks {
@@ -44,6 +46,7 @@ public final class AttestationHooks {
     private static final String SAMSUNG = "com.samsung.android.";
     private static final String DATA_FILE = "gms_certified_props.json";
 
+
     private static final boolean SPOOF_GMS =
             SystemProperties.getBoolean("persist.sys.spoof.gms", true);
 
@@ -51,10 +54,21 @@ public final class AttestationHooks {
             ComponentName.unflattenFromString(
                     "com.google.android.gms/.auth.uiflows.minutemaid.MinuteMaidActivity");
 
+    private static final Map<String, Object> sPropsToChangePixelXL;
+
     private static volatile String sProcessName;
     private static volatile boolean sIsGms = false;
 
     private AttestationHooks() {}
+
+    static {
+        sPropsToChangePixelXL = new HashMap<>();
+        sPropsToChangePixelXL.put("BRAND", "google");
+        sPropsToChangePixelXL.put("MANUFACTURER", "Google");
+        sPropsToChangePixelXL.put("DEVICE", "marlin");
+        sPropsToChangePixelXL.put("PRODUCT", "marlin");
+        sPropsToChangePixelXL.put("MODEL", "Pixel XL");
+    }
 
     private static void setBuildField(String key, String value) {
         try {
@@ -98,6 +112,14 @@ public final class AttestationHooks {
                 sProcessName = processName;
                 sIsGms = true;
                 setGmsCertifiedProps();
+            }
+        }
+
+        // Spoof Google Photos as Pixel XL
+        if (packageName.equals("com.google.android.apps.photos")) {
+            dlog("Spoofing Google Photos as Pixel XL");
+            for (Map.Entry<String, Object> prop : sPropsToChangePixelXL.entrySet()) {
+                setBuildField(prop.getKey(), String.valueOf(prop.getValue()));
             }
         }
 
